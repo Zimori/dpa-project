@@ -7,13 +7,11 @@ services:
         # don't require any access token or password for accessing the notebook's webinterface
         command: start-notebook.py --NotebookApp.token='' --NotebookApp.password='' --no-browser
 
-        # persist changes done in the workspace directory
+       # using "bind mount" with relative path rather than a named volume
         volumes:
-            - diss-master-spark-sql-tp:/home/jovyan/workspace
+            - .:/home/jovyan/work
 
         # avoid a port clash with a native installation
         ports:
             - 8889:8888
 
-volumes:
-    diss-master-spark-sql-tp:
