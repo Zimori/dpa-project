@@ -1,0 +1,19 @@
+services:
+    notebook:
+        # build the container image specified in the Dockerfile
+        build:
+            context: .
+
+        # don't require any access token or password for accessing the notebook's webinterface
+        command: start-notebook.py --NotebookApp.token='' --NotebookApp.password='' --no-browser
+
+        # persist changes done in the workspace directory
+        volumes:
+            - diss-master-spark-sql-tp:/home/jovyan/workspace
+
+        # avoid a port clash with a native installation
+        ports:
+            - 8889:8888
+
+volumes:
+    diss-master-spark-sql-tp:
