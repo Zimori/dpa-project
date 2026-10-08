@@ -1,7 +1,9 @@
 data/*
 
-# do NOT ignore data dir (double security) 
+# do NOT ignore data dir itself (double security) 
 !data/.gitkeep
 
 *.parquet
 .ipynb_checkpoints/
+
+
