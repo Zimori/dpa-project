@@ -32,4 +32,3 @@ echo "removing archive files..."
 rm -f "${MBFOLDER}/mbdump.tar.bz2" "${MBFOLDER}"/*.tar
 
 echo "Data acquired succesfully."
-

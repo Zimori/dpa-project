@@ -1,0 +1,83 @@
+\documentclass[10pt,a4paper,twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage{abstract}
+\usepackage{tabularx}
+
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\setlength{\parskip}{4pt}
+
+\title{
+    \large\textbf{Project Proposal: Music Artist Bridge Detection} \\
+    \normalsize Data Processing and Analytics (DISS-DPA) \\
+    \normalsize GitHub: \url{https://github.com/Zimori/dpa-project}
+}
+\author{Siham \and Aya \and Aghiles}
+\date{October 10, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We study whether certain music artists act as bridges between countries and genres, and whether that structural role is reflected in their listening patterns. This proposal covers our domain, overarching question, data sources, and the main risks we foresee across all three parts of the project.
+\end{abstract}
+
+\section{Domain and Overarching Question}
+
+Our domain is music listening behavior. The overarching question that drives all three parts is: do certain music artists act as bridges that connect different countries or genres, and does that structural role show up in how people listen to them?
+
+\begin{itemize}
+  \item \textbf{Part I, Volume (Spark SQL):} Which countries produce the most listened to artists, and does an artist's country of origin predict how wide their global audience is?
+  \item \textbf{Part II, Velocity (Structured Streaming):} Can we detect shifts in artist popularity or cross country reach in real time as listening events arrive?
+  \item \textbf{Part III, Variety (GraphFrames):} Which artists structurally sit between communities in the collaboration graph, acting as bridges across genres or countries?
+\end{itemize}
+
+\section{Data Sources}
+
+We use two datasets, both published by the MetaBrainz Foundation under the CC0 licence (public domain). They are freely available with no account, no API key, and no usage restrictions. The two sources share a common identifier, the MusicBrainz ID (MBID), a stable UUID that serves as the join key across both datasets.
+
+\textbf{ListenBrainz} contains listening events recording which user listened to which track and when. We downloaded three days of incremental Spark dumps covering October 6 to 8, 2026, totalling approximately 600 MB and 11.4 million rows. \textbf{MusicBrainz} contains artist metadata including name, country of origin, type, and collaboration relationships. We downloaded the full export of 7.2 GB and extracted only the five tables needed across the three parts.
+
+\begin{table}[h]
+\centering
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\columnwidth}{>{\bfseries}p{1.8cm} X}
+\toprule
+Dataset & Details \\
+\midrule
+ListenBrainz
+    & Listening events: user, timestamp, track and artist MBID \\
+    & 3 days of Spark dumps (Oct 6 to 8, 2026) \\
+    & 11.4 million rows, $\approx$600 MB \\
+    & Licence: CC0 \\
+    & \href{https://data.metabrainz.org/pub/musicbrainz/listenbrainz}{data.metabrainz.org/pub/musicbrainz/listenbrainz} \\
+\addlinespace
+MusicBrainz
+    & Artist metadata: name, country, type, collaborations \\
+    & Full export, 5 tables extracted \\
+    & 7.2 GB compressed \\
+    & Licence: CC0 \\
+    & \href{https://data.metabrainz.org/pub/musicbrainz/data/fullexport}{data.metabrainz.org/pub/musicbrainz/data/fullexport} \\
+\bottomrule
+\end{tabularx}
+\caption{Data sources, licences, and sizes.}
+\end{table}
+
+\newpage
+\section{Reproducible Acquisition}
+
+Our repository at \url{https://github.com/Zimori/dpa-project} includes a \texttt{get\_data.sh} script at the root level. Running it inside the Docker container automatically downloads the MusicBrainz full export and the three ListenBrainz incremental dumps, then extracts only the five tables needed: \texttt{artist}, \texttt{area}, \texttt{l\_artist\_artist}, \texttt{link}, and \texttt{link\_type}. The README explains the full reproduction steps.
+
+\section{Main Risks}
+
+The MusicBrainz full export is 7.2 GB compressed and takes over an hour to download on a standard connection. We mitigate this by running the download once inside Docker and keeping the data in the bind mounted volume so it persists across container restarts. A secondary risk is that MetaBrainz periodically rotates dump folders. We handle this using a \texttt{LATEST} pointer in the download script that always resolves to an existing folder, so the script never breaks due to a stale URL.
+
+\end{document}

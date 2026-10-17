@@ -6,4 +6,10 @@ data/*
 *.parquet
 .ipynb_checkpoints/
 
-
+# LaTeX build files
+*.aux
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
