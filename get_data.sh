@@ -25,5 +25,10 @@ for archive in ${MBFOLDER}/*.tar; do
     tar -xvf "$archive" -C "${MBFOLDER}"
 done
 
-# these tables will be fine for the moment
-tar -xjf ${MBFOLDER}/mbdump.tar.bz2 -C ${MBFOLDER}/ mbdump/artist mbdump/area mbdump/l_artist_artist mbdump/link mbdump/link_type
+# we extract the only 5 tables we need (--occurence to stop reading when found and lbzip2 for multi-thread for decompression)
+tar -I lbzip2 --occurrence -xvf "${MBFOLDER}/mbdump.tar.bz2" -C "${MBFOLDER}/" mbdump/artist mbdump/area mbdump/l_artist_artist mbdump/link mbdump/link_type
+
+echo "removing archive files..."
+rm -f "${MBFOLDER}/mbdump.tar.bz2" "${MBFOLDER}"/*.tar
+
+echo "Data acquired succesfully."
