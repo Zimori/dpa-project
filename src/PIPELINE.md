@@ -91,7 +91,7 @@ The listens table has no user location column so we cannot measure where listene
 | Table | Rows | Size |
 |---|---|---|
 | listens raw | 39,431,528 | ~1.28 GB |
-| listens_clean | 31,690,487 | ~347 MB |
+| listens_clean | 31,690,487 | ~1.16 GB |
 | artist_clean | 1,497,472 | ~29 MB |
 | area_clean | 120,108 | ~1.8 MB |
-| joined | 17,271,689 | ~6 MB |
+| joined | 17,271,689 | ~17 MB |
