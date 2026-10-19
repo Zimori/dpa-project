@@ -13,3 +13,4 @@ data/*
 *.out
 *.synctex.gz
 *.fdb_latexmk
+*.bak
