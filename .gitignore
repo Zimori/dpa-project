@@ -1,4 +1,6 @@
 data/*
+dev-notes.md
+src/PIPELINE.md
 
 # do NOT ignore data dir itself (double security) 
 !data/.gitkeep
