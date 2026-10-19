@@ -1,40 +1,47 @@
-# Do certain music artists act as bridges that connect different countries or genres, and does that connect different countries or genres, and does that structural role show up in how people listen to them?
+# Music Artist Bridge Detection
+
+**Question:** Do certain music artists act as bridges that connect different countries or genres, and does that structural role show up in how people listen to them?
+
+This repository contains our DISS-DPA project. Part 1 (Volume) uses Spark SQL on ListenBrainz listening data joined with MusicBrainz artist metadata.
+
+## Data
+
+Both datasets come from the MetaBrainz Foundation and are released under CC0.
+
+| Dataset | Source |
+|---|---|
+| ListenBrainz (listening events) | https://data.metabrainz.org/pub/musicbrainz/listenbrainz |
+| MusicBrainz (artist metadata) | https://data.metabrainz.org/pub/musicbrainz/data/fullexport |
 
 ## Prerequisites
 
-- **System tools**: `curl`, `tar`, `lbzip2`
-- **Docker & Docker Compose** installed and running.
-- **Disk Space**: At least 15–20 GB of free disk space (to store both compressed dumps and extracted tables).
+- System tools: `curl`, `tar`, `lbzip2`
+- Docker and Docker Compose, installed and running
+- At least 15-20 GB of free disk space (compressed dumps and extracted tables)
 
-## Steps in order to reproduce the project
+## How to reproduce
 
-### 1. Check installation of necessary tools
-
-```bash
-sudo apt update && sudo apt install -y curl lbzip2 tar
-```
-
-### 2. Download data
+1. **Install the tools** (Ubuntu/Debian):
 
 ```bash
-chmod +x get_data.sh
-./get_data.sh
+   sudo apt update && sudo apt install -y curl lbzip2 tar
 ```
 
-in the root directory.
-
-### 3. Launch environment
+2. **Download the data.** From the root of the repository, run:
 
 ```bash
-docker compose up
+   chmod +x get_data.sh
+   ./get_data.sh
 ```
 
-Webinterface is available  at [http://localhost:8889](http://localhost:8889)
+   This downloads the MusicBrainz full export and the ListenBrainz dumps, and keeps only the tables we need. The MusicBrainz export is about 7.2 GB and can take over an hour.
 
-### 4. Run pipeline
+3. **Start the environment:**
 
 ```bash
-src/part1.ipynb
+   docker compose up
 ```
 
-Ingestion, Data Cleaning, Spark SQL analysis.
+   The Jupyter web interface is then available at http://localhost:8889.
+
+4. **Run the pipeline.** In Jupyter, open `src/part1.ipynb` and run all cells in order. The notebook does the ingestion, the data cleaning and the Spark SQL analysis. TODO: say where the Parquet outputs are saved.
