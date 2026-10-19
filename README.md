@@ -8,10 +8,10 @@ This repository contains our DISS-DPA project. Part 1 (Volume) uses Spark SQL on
 
 Both datasets come from the MetaBrainz Foundation and are released under CC0.
 
-| Dataset | Source |
-|---|---|
-| ListenBrainz (listening events) | https://data.metabrainz.org/pub/musicbrainz/listenbrainz |
-| MusicBrainz (artist metadata) | https://data.metabrainz.org/pub/musicbrainz/data/fullexport |
+| Dataset | Role in Pipeline | Source URL |
+|---|---|---|
+| **ListenBrainz** | Event logs (listens, timestamps, artist MBIDs) | https://data.metabrainz.org/pub/musicbrainz/listenbrainz/incremental/ |
+| **MusicBrainz** | Entity metadata & relations (artists, areas, collaborations) | https://data.metabrainz.org/pub/musicbrainz/data/fullexport/ |
 
 ## Prerequisites
 
@@ -21,10 +21,13 @@ Both datasets come from the MetaBrainz Foundation and are released under CC0.
 
 ## How to reproduce
 
-1. **Install the tools** (Ubuntu/Debian):
+1. **Clone the repository and install the tools** (Ubuntu/Debian):
 
 ```bash
-   sudo apt update && sudo apt install -y curl lbzip2 tar
+git clone https://github.com/Zimori/dpa-project.git
+cd dpa-project
+
+sudo apt update && sudo apt install -y curl lbzip2 tar
 ```
 
 2. **Download the data.** From the root of the repository, run:
@@ -34,7 +37,7 @@ Both datasets come from the MetaBrainz Foundation and are released under CC0.
    ./get_data.sh
 ```
 
-   This downloads the MusicBrainz full export and the ListenBrainz dumps, and keeps only the tables we need. The MusicBrainz export is about 7.2 GB and can take over an hour.
+This downloads the MusicBrainz full export and the ListenBrainz dumps, and keeps only the tables we need. The MusicBrainz export is about 7.2 GB and can take over an hour.
 
 3. **Start the environment:**
 
@@ -42,6 +45,6 @@ Both datasets come from the MetaBrainz Foundation and are released under CC0.
    docker compose up
 ```
 
-   The Jupyter web interface is then available at http://localhost:8889.
+The Jupyter web interface is then available at http://localhost:8889.
 
-4. **Run the pipeline.** In Jupyter, open `src/part1.ipynb` and run all cells in order. The notebook does the ingestion, the data cleaning and the Spark SQL analysis. TODO: say where the Parquet outputs are saved.
+4. **Run the pipeline.** In Jupyter, open `src/part1.ipynb` and run all cells in order. The notebook does the ingestion, the data cleaning and the Spark SQL analysis. Parquet tables are in `work/data/processed/`.
