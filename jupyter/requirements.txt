@@ -1,0 +1,6 @@
+pyspark==3.5.3
+jupyterlab==4.2.5
+pandas>=2.0,<2.3
+numpy<2
+pyarrow>=14,<18
+confluent-kafka==2.6.0
